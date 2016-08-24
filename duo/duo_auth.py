@@ -53,10 +53,9 @@ def auth_stat(pargs, auth_api):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Check Authentication Params to DUO. \
-        'Password' is the skey for the auth api application in duo")
+        description="Check Authentication Params to DUO.")
     parser.add_argument("--ikey", help="Integration Key")
-    parser.add_argument("host", help="API Hostname")
+    parser.add_argument("host", help="API Hostname [api-xx.duosecurity.com]")
     parser.add_argument("method", help="API Method [push, sms, phone]")
     parser.add_argument("--user", help="Username")
     parser.add_argument("--factor", help="2FA Factor")
