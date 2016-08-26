@@ -40,16 +40,17 @@ def preauth(pargs, auth_api):
 def auth_stat(pargs, auth_api):
     args = []
     kwargs = {}
-    txid = auth_api.auth(pargs.factor,username=pargs.user,\
-        device='auto',async='1',*args,**kwargs).values()
-    print ''
-    print "Checking auth status for txid: ", txid
-    print "======================================"
-    auth_stat = auth_api.auth_status(txid)
-    print ''
-    print "Response: "
-    print "=========="
-    print(yaml.safe_dump(auth_stat, default_flow_style=False))
+    for user in pargs.user:
+        txid = auth_api.auth(pargs.factor,username=user,\
+            device='auto',async='1',*args,**kwargs).values()
+        print ''
+        print "Checking auth status for txid: ", txid
+        print "======================================"
+        auth_stat = auth_api.auth_status(txid)
+        print ''
+        print "Response: "
+        print "=========="
+        print(yaml.safe_dump(auth_stat, default_flow_style=False))
 
 def main():
     parser = argparse.ArgumentParser(
@@ -57,7 +58,7 @@ def main():
     parser.add_argument("--ikey", help="Integration Key")
     parser.add_argument("host", help="API Hostname [api-xx.duosecurity.com]")
     parser.add_argument("method", help="API Method [push, sms, phone]")
-    parser.add_argument("--user", help="Username")
+    parser.add_argument("--user", nargs='+', help="Username")
     parser.add_argument("--factor", help="2FA Factor")
 
     pargs = parser.parse_args()
