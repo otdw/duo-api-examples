@@ -57,7 +57,7 @@ def main():
         description="Check Authentication Params to DUO.")
     parser.add_argument("--ikey", help="Integration Key")
     parser.add_argument("host", help="API Hostname [api-xx.duosecurity.com]")
-    parser.add_argument("method", help="API Method [push, sms, phone]")
+    parser.add_argument("--method", help="API Method [push, sms, phone]")
     parser.add_argument("--user", nargs='+', help="Username")
     parser.add_argument("--factor", help="2FA Factor")
 
