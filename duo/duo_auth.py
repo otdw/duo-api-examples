@@ -60,7 +60,6 @@ def main():
     parser.add_argument("--method", help="API Method")
     parser.add_argument("--user", nargs='+', help="Username")
     parser.add_argument("--factor", help="2FA Factor [push, sms, phone]")
-    parser.add_argument("--txid", help="txid to check status")
 
     pargs = parser.parse_args()
 
@@ -68,10 +67,7 @@ def main():
 
     auth_api = duo_client.Auth(pargs.ikey, skey, pargs.host)
 
-    no_factors = ["check" not in pargs.method, "txstat" not in pargs.method]
-
-
-    if not pargs.factor and not any(no_factors):
+    if not pargs.factor and "check" not in pargs.method:
         raise RuntimeError('Must provide factor')
 
     elif 'check' in pargs.method:
