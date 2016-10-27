@@ -78,11 +78,6 @@ def main():
         preauth(pargs, auth_api)
     elif 'stat' in pargs.method:
         auth_stat(pargs, auth_api)
-    elif 'txstat' in pargs.method: # not working right now
-        txstat = duo_client.Verify(pargs.ikey, skey, pargs.host, pargs.txid)
-        print "Response for {}: ".format(pargs.txid)
-        print "=========="
-        print(yaml.safe_dump(txstat, default_flow_style=False))
     else:
         raise RuntimeError('Invalid Method')
 
