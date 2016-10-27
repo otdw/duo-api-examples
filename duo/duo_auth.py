@@ -57,9 +57,10 @@ def main():
         description="Check Authentication Params to DUO.")
     parser.add_argument("--ikey", help="Integration Key")
     parser.add_argument("host", help="API Hostname [api-xx.duosecurity.com]")
-    parser.add_argument("--method", help="API Method [push, sms, phone]")
+    parser.add_argument("--method", help="API Method")
     parser.add_argument("--user", nargs='+', help="Username")
-    parser.add_argument("--factor", help="2FA Factor")
+    parser.add_argument("--factor", help="2FA Factor [push, sms, phone]")
+    parser.add_argument("--txid", help="txid to check status")
 
     pargs = parser.parse_args()
 
@@ -67,8 +68,11 @@ def main():
 
     auth_api = duo_client.Auth(pargs.ikey, skey, pargs.host)
 
-    if not pargs.factor and "check" not in pargs.method:
-            raise RuntimeError('Must provide factor')
+    no_factors = ["check" not in pargs.method, "txstat" not in pargs.method]
+
+
+    if not pargs.factor and not any(no_factors):
+        raise RuntimeError('Must provide factor')
 
     elif 'check' in pargs.method:
         check_auth(auth_api)
@@ -78,6 +82,11 @@ def main():
         preauth(pargs, auth_api)
     elif 'stat' in pargs.method:
         auth_stat(pargs, auth_api)
+    elif 'txstat' in pargs.method: # not working right now
+        txstat = duo_client.Verify(pargs.ikey, skey, pargs.host, pargs.txid)
+        print "Response for {}: ".format(pargs.txid)
+        print "=========="
+        print(yaml.safe_dump(txstat, default_flow_style=False))
     else:
         raise RuntimeError('Invalid Method')
 
